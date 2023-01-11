@@ -64,24 +64,19 @@ else {
     if(!preg_match('/^[A-za-z\s]+$/', $name)) {
         $returnData = msg(0, 422, 'Name must be letters and spaces only!');
     }
-    $eventTimeExists = $eventTownexists = false;
+    $eventTimeAndTownExists = false;
 
     # Check that event time and town exists
     foreach ($availableEvents as $event) {
-        if ($event['Date and Time'] == $dateandtime) {
-            $eventTimeExists = true;
-        }
-        if($event['city'] == $town) {
-            $eventTownexists = true;
+        if ($event['Date and Time'] == $dateandtime && $event['city'] == $town) {
+            $eventTimeAndTownExists = true;
         }
     }
-    if (!$eventTimeExists) {
-        $returnData = msg(0, 422, 'Event time does not exist!');
+    echo $eventTimeAndTownExists;
+    if (!$eventTimeAndTownExists) {
+        $returnData = msg(0, 422, 'Event time or town does not exist!');
     }
-    if(!$eventTownexists) {
-        $returnData = msg(0, 422, 'Event town does not exist!');
-    }
-    
+
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     # Check that email is not already registered to same event
     $check_email = "SELECT * FROM `visitors` WHERE `email`=:email AND `dateandtime`=:dateandtime AND `town`=:town";
