@@ -81,7 +81,8 @@ else {
     if(!$eventTownexists) {
         $returnData = msg(0, 422, 'Event town does not exist!');
     }
-
+    
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     # Check that email is not already registered to same event
     $check_email = "SELECT * FROM `visitors` WHERE `email`=:email AND `dateandtime`=:dateandtime AND `town`=:town";
     $check_email_stmt = $conn->prepare($check_email);
